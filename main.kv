@@ -1,0 +1,298 @@
+WindowManager:
+    FirstWindow:
+        id: first    # te id trzeba pododawać by działały
+    SecondCheckWindow:
+        id: second_check
+    SecondMenuWindow:
+        id: second_menu
+    KatnatarciaWindow:
+        id: katnatarcia
+    KsztaltWindow:
+        id: ksztalt
+    RodzajWindow:
+        id: rodzaj
+
+<FirstWindow>:
+    name: "first"
+    BoxLayout:
+        orientation: "vertical"
+        size: root.width, root.height
+
+
+        Label:
+            id: word_start_label
+            text_size: self.size
+            halign: "center"
+            valign: "middle"
+            text: "Dokonaj wyboru"
+            font_size: 24
+
+        Button:
+            text: "Sprawdź oznaczenie"
+            on_release:
+                app.root.current = "second"
+                root.manager.transition.direction = "left"
+        Button:
+            text: "Dodawanie"
+            on_release:
+                app.root.current = "third"
+                root.manager.transition.direction = "left"
+
+<SecondCheckWindow>:
+    name: "second"
+    BoxLayout:
+        orientation: "vertical"
+        size: root.width, root.height
+
+        Label:
+            id: word_label
+            text_size: self.size
+            halign: "center"
+            valign: "middle"
+            text: "Wpisz oznaczenie płytki by otrzymać informacje na jej temat"
+            font_size: 24
+
+        TextInput:
+            id: word_input3
+            multiline: False
+            size_hint: (1, .5)
+
+        Button:
+            size_hint: (1, .5)
+            text: "Check"
+            on_press: app.check()
+
+        Button:
+            text: "Cofnij"
+            on_release:
+                app.root.current = "first"
+                root.manager.transition.direction = "right"  # by przy kliknięciu ekran tak jakby nie przesuwał się
+                # w prawo, tylko w lewo, czyli tak jakby cofał
+<SecondMenuWindow>:
+    name: "third"
+    BoxLayout:
+        orientation: "vertical"
+        size: root.width, root.height
+        Label:
+            id: word_label_dodaj
+            text_size: self.size
+            halign: "center"
+            valign: "middle"
+            text: "Co chcesz dodać"
+            font_size: 24
+
+        Button:
+            size_hint: (1, .5)
+            text: "Dodaj kształt płytki do bazy"
+            on_release:
+                app.root.current = "ksztalt"
+                root.manager.transition.direction = "left"
+
+        Button:
+            text: "Dodaj do bazy oznaczenie kątu natarcia płytki"
+            on_release:
+                app.root.current = "katnatarcia"
+                root.manager.transition.direction = "left"
+
+        Button:
+            text: "Dodaj do bazy oznaczenie rodzaju płytki"
+            on_release:
+                app.root.current = "rodzaj"
+                root.manager.transition.direction = "left"
+
+        Button:
+            text: "Cofnij"
+            on_release:
+                app.root.current = "first"
+                root.manager.transition.direction = "right"
+
+<KsztaltWindow>:
+    name: "ksztalt"
+    BoxLayout:
+        orientation: "vertical"
+        size: root.width, root.height
+        Label:
+            id: word_label_dodaj
+            text_size: self.size
+            halign: "center"
+            valign: "middle"
+            text: "Uzupełnij dane na temat kształtu płytki"
+            font_size: 24
+        GridLayout:
+            cols: 2
+            Label:
+                id: third_ozn
+                text_size: self.size
+                halign: "center"
+                valign: "middle"
+                text: "Wpisz oznaczenie kształtu płytki"
+                font_size: 24
+
+            TextInput:
+                id: word_input
+                multiline: False
+                size_hint: (1, .5)
+
+            Label:
+                id: third_opis
+                text_size: self.size
+                halign: "center"
+                valign: "middle"
+                text: "Dodaj opis kształtu"
+                font_size: 24
+
+            TextInput:
+                id: word_input2
+                multiline: False
+                size_hint: (1, .5)
+
+        Button:
+            size_hint: (1, .5)
+            font_size: 24
+            text: "Dodaj kształt płytki do bazy"
+            on_press: app.submit()
+
+
+        Button:
+            size_hint: (1, .5)
+            font_size: 24
+            text: "Pokaż kształty płytki będące już w bazie danych"
+            on_press: app.show_records()
+
+        Button:
+            text: "Cofnij"
+            on_release:
+                app.root.current = "third"
+                root.manager.transition.direction = "right"
+
+        Button:
+            text: "Wyjdź"
+            on_release:
+                app.root.current = "first"
+                root.manager.transition.direction = "right"
+
+<KatnatarciaWindow>:
+    name: "katnatarcia"
+    BoxLayout:
+        orientation: "vertical"
+        size: root.width, root.height
+        Label:
+            id: word_label_dodaj_katnatarcia
+            text_size: self.size
+            halign: "center"
+            valign: "middle"
+            text: "Uzupełnij dane na temat kątu natarcia"
+            font_size: 24
+        GridLayout:
+            cols: 2
+            Label:
+                id: third_ozn
+                text_size: self.size
+                halign: "center"
+                valign: "middle"
+                text: "Wpisz oznaczenie kąta natarcia"
+                font_size: 24
+
+            TextInput:
+                id: word_input
+                multiline: False
+                size_hint: (1, .5)
+
+            Label:
+                id: third_opis
+                text_size: self.size
+                halign: "center"
+                valign: "middle"
+                text: "Dodaj opis"
+                font_size: 24
+
+            TextInput:
+                id: word_input2
+                multiline: False
+                size_hint: (1, .5)
+
+        Button:
+            size_hint: (1, .5)
+            font_size: 24
+            text: "Dodaj nowe oznaczenie kąta natarcia"
+            on_press: app.submit_kat_natarcia()
+
+        Button:
+            size_hint: (1, .5)
+            font_size: 24
+            text: "Pokaż kąty natarcia będące już w bazie danych"
+            on_press: app.show_records_natarcia()
+
+        Button:
+            text: "Cofnij"
+            on_release:
+                app.root.current = "third"
+                root.manager.transition.direction = "right"
+        Button:
+            text: "Wyjdź"
+            on_release:
+                app.root.current = "first"
+                root.manager.transition.direction = "right"
+
+<RodzajWindow>:
+    name: "rodzaj"
+    BoxLayout:
+        orientation: "vertical"
+        size: root.width, root.height
+        Label:
+            id: word_label_dodaj_rodzaj
+            text_size: self.size
+            halign: "center"
+            valign: "middle"
+            text: "Uzupełnij dane na temat rodzaju płytki"
+            font_size: 24
+        GridLayout:
+            cols: 2
+            Label:
+                id: third_ozn
+                text_size: self.size
+                halign: "center"
+                valign: "middle"
+                text: "Wpisz oznaczenie rodzaju płytki"
+                font_size: 24
+
+            TextInput:
+                id: word_input
+                multiline: False
+                size_hint: (1, .5)
+
+            Label:
+                id: third_opis
+                text_size: self.size
+                halign: "center"
+                valign: "middle"
+                text: "Dodaj opis"
+                font_size: 24
+
+            TextInput:
+                id: word_input2
+                multiline: False
+                size_hint: (1, .5)
+
+        Button:
+            size_hint: (1, .5)
+            font_size: 24
+            text: "Dodaj nowe oznaczenie rodzaju płytki"
+            on_press: app.submit_rodzaj()
+
+        Button:
+            size_hint: (1, .5)
+            font_size: 24
+            text: "Pokaż rodzaje płytek będące w bazie danych"
+            on_press: app.show_records_rodzaj()
+
+        Button:
+            text: "Cofnij"
+            on_release:
+                app.root.current = "third"
+                root.manager.transition.direction = "right"
+        Button:
+            text: "Wyjdź"
+            on_release:
+                app.root.current = "first"
+                root.manager.transition.direction = "right"
