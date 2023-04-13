@@ -70,6 +70,12 @@ class MainApp(MDApp):
                             opis            VARCHAR(250))
                         """)
 
+        c.execute("""CREATE TABLE if not exists tolerancja_plytki(
+                                    oznaczenie      VARCHAR(2),
+                                    ic              VARCHAR(250),
+                                    grubosc         VARCHAR(10))
+                                """)
+
         # Check to see if table created
         c.execute("SELECT * from kształt_plytki")
 
@@ -182,6 +188,39 @@ class MainApp(MDApp):
         # Close connection
         mydb.close()
 
+    def submit_tolerancja(self):
+        mydb = mysql.connector.connect(
+            host = "localhost",
+            user = "root",
+            password = "password123",
+            database = "second_db",
+            )
+
+        # Create A Cursor
+        c = mydb.cursor()
+
+        # Add A Record
+        sql_command = "INSERT INTO tolerancja_plytki (oznaczenie, ic, grubosc) VALUES (%s, %s, %s)"
+        value = (self.root.ids.tolerancja.ids.word_input.text,self.root.ids.tolerancja.ids.word_input2.text,self.root.ids.tolerancja.ids.word_input4.text, )
+
+        # Exceute SQL Command
+        c.execute(sql_command, value)
+
+
+        # Add a message
+        self.root.ids.tolerancja.ids.word_label_dodaj_rodzaj.text = f'{self.root.ids.tolerancja.ids.word_input.text} Added'
+
+        # Clear the input box
+        self.root.ids.tolerancja.ids.word_input.text = ''
+        self.root.ids.tolerancja.ids.word_input2.text = ''
+        self.root.ids.tolerancja.ids.word_input4.text = ''
+
+
+        # Commit changes
+        mydb.commit()
+
+        # Close connection
+        mydb.close()
     def show_records(self):
         mydb = mysql.connector.connect(
             host="localhost",
@@ -240,7 +279,33 @@ class MainApp(MDApp):
         mydb = mysql.connector.connect(
             host="localhost",
             user="root",
+            password="password123",
+            database="second_db",
+        )
 
+        # Create A Cursor
+        c = mydb.cursor()
+
+        # Grab records from database
+        c.execute("SELECT * FROM rodzaj_plytki")
+        records = c.fetchall()
+
+        word = ''
+        # Loop for records
+        for record in records:
+            word = f'{word}\n{record}'
+            self.root.ids.rodzaj.ids.word_label_dodaj_rodzaj.text = f'{word}'
+
+        # Commit changes
+        mydb.commit()
+
+        # Close connection
+        mydb.close()
+
+    def show_records_tolerancja(self):
+        mydb = mysql.connector.connect(
+            host="localhost",
+            user="root",
             password="password123",
             database="second_db",
         )
