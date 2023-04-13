@@ -66,6 +66,7 @@ WindowManager:
 
         Button:
             text: "Cofnij"
+            size_hint: (1, .5)
             on_release:
                 app.root.current = "first"
                 root.manager.transition.direction = "right"  # by przy kliknięciu ekran tak jakby nie przesuwał się
@@ -97,15 +98,15 @@ WindowManager:
                 root.manager.transition.direction = "left"
 
         Button:
-            text: "Dodaj do bazy oznaczenie rodzaju płytki"
-            on_release:
-                app.root.current = "rodzaj"
-                root.manager.transition.direction = "left"
-
-        Button:
             text: "Dodaj do bazy oznaczenie tolerancji płytki"
             on_release:
                 app.root.current = "tolerancja"
+                root.manager.transition.direction = "left"
+
+        Button:
+            text: "Dodaj do bazy oznaczenie rodzaju płytki"
+            on_release:
+                app.root.current = "rodzaj"
                 root.manager.transition.direction = "left"
 
         Button:
@@ -311,7 +312,7 @@ WindowManager:
         orientation: "vertical"
         size: root.width, root.height
         Label:
-            id: word_label_dodaj_rodzaj
+            id: word_label_dodaj_tolerancja
             text_size: self.size
             halign: "center"
             valign: "middle"

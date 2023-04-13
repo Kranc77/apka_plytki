@@ -2,6 +2,9 @@ from kivy.lang import Builder
 from kivymd.app import MDApp
 import mysql.connector
 from kivy.uix.screenmanager import ScreenManager, Screen # Dodawanie wielu okien
+from kivy.core.window import Window
+Window.size = (1000, 600)
+Window.left = Window.width/4
 
 class FirstWindow(Screen):
     pass
@@ -19,6 +22,9 @@ class KsztaltWindow(Screen):
     pass
 
 class RodzajWindow(Screen):
+    pass
+
+class TolerancjaWindow(Screen):
     pass
 
 class WindowManager(ScreenManager):
@@ -73,7 +79,7 @@ class MainApp(MDApp):
         c.execute("""CREATE TABLE if not exists tolerancja_plytki(
                                     oznaczenie      VARCHAR(2),
                                     ic              VARCHAR(250),
-                                    grubosc         VARCHAR(10))
+                                    grubosc         VARCHAR(50))
                                 """)
 
         # Check to see if table created
@@ -208,7 +214,7 @@ class MainApp(MDApp):
 
 
         # Add a message
-        self.root.ids.tolerancja.ids.word_label_dodaj_rodzaj.text = f'{self.root.ids.tolerancja.ids.word_input.text} Added'
+        self.root.ids.tolerancja.ids.word_label_dodaj_tolerancja.text = f'{self.root.ids.tolerancja.ids.word_input.text} Added'
 
         # Clear the input box
         self.root.ids.tolerancja.ids.word_input.text = ''
@@ -314,14 +320,14 @@ class MainApp(MDApp):
         c = mydb.cursor()
 
         # Grab records from database
-        c.execute("SELECT * FROM rodzaj_plytki")
+        c.execute("SELECT * FROM tolerancja_plytki")
         records = c.fetchall()
 
         word = ''
         # Loop for records
         for record in records:
             word = f'{word}\n{record}'
-            self.root.ids.rodzaj.ids.word_label_dodaj_rodzaj.text = f'{word}'
+            self.root.ids.tolerancja.ids.word_label_dodaj_tolerancja.text = f'{word}'
 
         # Commit changes
         mydb.commit()
@@ -344,14 +350,29 @@ class MainApp(MDApp):
         value = self.root.ids.second_check.ids.word_input3.text
         # Grab records from database
         sql_query = """SELECT opis FROM kształt_plytki WHERE oznaczenie = %s"""
+        sql_query2 = """SELECT opis FROM katnatarcia_plytki WHERE oznaczenie = %s"""
+        sql_query3 = """SELECT ic, grubosc FROM tolerancja_plytki WHERE oznaczenie = %s"""
+        sql_query4 = """SELECT opis FROM rodzaj_plytki WHERE oznaczenie = %s"""
         try:
-            c.execute(sql_query, (value,))
+            c.execute(sql_query, (value[0],))
             record = c.fetchone()
+            c.execute(sql_query2, (value[1],))
+            record2 = c.fetchone()
+            c.execute(sql_query3, (value[2],))
+            record3 = c.fetchall()
+            c.execute(sql_query4, (value[3],))
+            record4 = c.fetchone()
             # nie chcąc otrzymać w odpowiedzi ('cos') tylko cos to trzeba dać indeks [0]
-            self.root.ids.second_check.ids.word_label.text = f'Jest to {record[0]}'
+            self.root.ids.second_check.ids.word_label.text = f'Jest to {record[0]} o kącie natarcia równym {record2[0]} \n' \
+                                                             f'Jej tolerancja okregu wpisanego wynosi {record3[0][0]}, a rolerancja grubości {record3[0][1]} ' \
+                                                             f'\n Rodzajem płytki jest {record4[0]}. \n' \
+                                                             f'Długość krawiędzi tnącej jest równa {value[5:7]} mm'
         except TypeError:
             self.root.ids.second_check.ids.word_label.text = f'Nie znaleziono podanego kodu płytki w bazie danych, sprawdź poprawność ' \
                                             f'wpisanych danych i spróbuj jeszcze raz'
+        except IndexError:
+            self.root.ids.second_check.ids.word_label.text = f'Sprawdź czy podany przez ciebie kod jest poprawny oraz czy format jest poprawny. ' \
+                                            f'\n Format powinien być XXXX XXXXXX'
 
         # Commit changes
         mydb.commit()
