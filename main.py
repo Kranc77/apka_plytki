@@ -27,6 +27,9 @@ class RodzajWindow(Screen):
 class TolerancjaWindow(Screen):
     pass
 
+class GruboscWindow(Screen):
+    pass
+
 class WindowManager(ScreenManager):
     pass
 
@@ -81,6 +84,12 @@ class MainApp(MDApp):
                                     ic              VARCHAR(250),
                                     grubosc         VARCHAR(50))
                                 """)
+
+        c.execute("""CREATE TABLE if not exists grubosc_plytki(
+                                            oznaczenie      VARCHAR(3),
+                                            mm              VARCHAR(250),
+                                            cal             VARCHAR(50))
+                                        """)
 
         # Check to see if table created
         c.execute("SELECT * from kształt_plytki")
@@ -227,6 +236,40 @@ class MainApp(MDApp):
 
         # Close connection
         mydb.close()
+
+    def submit_grubosc(self):
+        mydb = mysql.connector.connect(
+            host = "localhost",
+            user = "root",
+            password = "password123",
+            database = "second_db",
+            )
+
+        # Create A Cursor
+        c = mydb.cursor()
+
+        # Add A Record
+        sql_command = "INSERT INTO grubosc_plytki (oznaczenie, mm, cal) VALUES (%s, %s, %s)"
+        value = (self.root.ids.grubosc.ids.word_input.text,self.root.ids.grubosc.ids.word_input2.text,self.root.ids.grubosc.ids.word_input4.text, )
+
+        # Exceute SQL Command
+        c.execute(sql_command, value)
+
+
+        # Add a message
+        self.root.ids.grubosc.ids.word_label_dodaj_grubosc.text = f'{self.root.ids.grubosc.ids.word_input.text} Added'
+
+        # Clear the input box
+        self.root.ids.grubosc.ids.word_input.text = ''
+        self.root.ids.grubosc.ids.word_input2.text = ''
+        self.root.ids.grubosc.ids.word_input4.text = ''
+
+
+        # Commit changes
+        mydb.commit()
+
+        # Close connection
+        mydb.close()
     def show_records(self):
         mydb = mysql.connector.connect(
             host="localhost",
@@ -335,6 +378,33 @@ class MainApp(MDApp):
         # Close connection
         mydb.close()
 
+    def show_records_grubosc(self):
+        mydb = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="password123",
+            database="second_db",
+        )
+
+        # Create A Cursor
+        c = mydb.cursor()
+
+        # Grab records from database
+        c.execute("SELECT * FROM grubosc_plytki")
+        records = c.fetchall()
+
+        word = ''
+        # Loop for records
+        for record in records:
+            word = f'{word}\n{record}'
+            self.root.ids.grubosc.ids.word_label_dodaj_grubosc.text = f'{word}'
+
+        # Commit changes
+        mydb.commit()
+
+        # Close connection
+        mydb.close()
+
     def check(self):
         mydb = mysql.connector.connect(
             host="localhost",
@@ -353,6 +423,7 @@ class MainApp(MDApp):
         sql_query2 = """SELECT opis FROM katnatarcia_plytki WHERE oznaczenie = %s"""
         sql_query3 = """SELECT ic, grubosc FROM tolerancja_plytki WHERE oznaczenie = %s"""
         sql_query4 = """SELECT opis FROM rodzaj_plytki WHERE oznaczenie = %s"""
+        sql_query5 = """SELECT mm, cal FROM grubosc_plytki WHERE oznaczenie = %s"""
         try:
             c.execute(sql_query, (value[0],))
             record = c.fetchone()
@@ -362,11 +433,13 @@ class MainApp(MDApp):
             record3 = c.fetchall()
             c.execute(sql_query4, (value[3],))
             record4 = c.fetchone()
+            c.execute(sql_query5, (value[7:9],))
+            record5 = c.fetchall()
             # nie chcąc otrzymać w odpowiedzi ('cos') tylko cos to trzeba dać indeks [0]
             self.root.ids.second_check.ids.word_label.text = f'Jest to {record[0]} o kącie natarcia równym {record2[0]} \n' \
                                                              f'Jej tolerancja okregu wpisanego wynosi {record3[0][0]}, a rolerancja grubości {record3[0][1]} ' \
                                                              f'\n Rodzajem płytki jest {record4[0]}. \n' \
-                                                             f'Długość krawiędzi tnącej jest równa {value[5:7]} mm'
+                                                             f'Długość krawiędzi tnącej jest równa {value[5:7]} mm, a grubość płytki wynosi {record5[0][0]} mm.'
         except TypeError:
             self.root.ids.second_check.ids.word_label.text = f'Nie znaleziono podanego kodu płytki w bazie danych, sprawdź poprawność ' \
                                             f'wpisanych danych i spróbuj jeszcze raz'

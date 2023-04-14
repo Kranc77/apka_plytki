@@ -13,6 +13,8 @@ WindowManager:
         id: rodzaj
     TolerancjaWindow:
         id: tolerancja
+    GruboscWindow:
+        id: grubosc
 
 <FirstWindow>:
     name: "first"
@@ -107,6 +109,12 @@ WindowManager:
             text: "Dodaj do bazy oznaczenie rodzaju płytki"
             on_release:
                 app.root.current = "rodzaj"
+                root.manager.transition.direction = "left"
+
+        Button:
+            text: "Dodaj do bazy oznaczenie grubosci płytki"
+            on_release:
+                app.root.current = "grubosc"
                 root.manager.transition.direction = "left"
 
         Button:
@@ -381,3 +389,80 @@ WindowManager:
             on_release:
                 app.root.current = "first"
                 root.manager.transition.direction = "right"
+
+<GruboscWindow>:
+    name: "grubosc"
+    BoxLayout:
+        orientation: "vertical"
+        size: root.width, root.height
+        Label:
+            id: word_label_dodaj_grubosc
+            text_size: self.size
+            halign: "center"
+            valign: "middle"
+            text: "Uzupełnij dane na temat grubości płytki"
+            font_size: 24
+        GridLayout:
+            cols: 2
+            Label:
+                id: third_ozn
+                text_size: self.size
+                halign: "center"
+                valign: "middle"
+                text: "Wpisz oznaczenie grubosci płytki"
+                font_size: 24
+
+            TextInput:
+                id: word_input
+                multiline: False
+                size_hint: (1, .5)
+
+            Label:
+                id: third_okrag
+                text_size: self.size
+                halign: "center"
+                valign: "middle"
+                text: "Dodaj wartość grubości płytki w milimetrach"
+                font_size: 24
+
+            TextInput:
+                id: word_input2
+                multiline: False
+                size_hint: (1, .5)
+
+            Label:
+                id: third_grubosc
+                text_size: self.size
+                halign: "center"
+                valign: "middle"
+                text: "Dodaj wartości grubości płtyki w calach"
+                font_size: 24
+
+            TextInput:
+                id: word_input4
+                multiline: False
+                size_hint: (1, .5)
+
+        Button:
+            size_hint: (1, .5)
+            font_size: 24
+            text: "Dodaj nowe oznaczenie grubości płytki"
+            on_press: app.submit_grubosc()
+
+        Button:
+            size_hint: (1, .5)
+            font_size: 24
+            text: "Pokaż oznaczenia grubości płytek będące w bazie danych"
+            on_press: app.show_records_grubosc()
+
+        Button:
+            text: "Cofnij"
+            on_release:
+                app.root.current = "third"
+                root.manager.transition.direction = "right"
+        Button:
+            text: "Wyjdź"
+            on_release:
+                app.root.current = "first"
+                root.manager.transition.direction = "right"
+
