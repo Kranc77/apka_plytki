@@ -30,6 +30,9 @@ class TolerancjaWindow(Screen):
 class GruboscWindow(Screen):
     pass
 
+class Dod_ozn_Window(Screen):
+    pass
+
 class WindowManager(ScreenManager):
     pass
 
@@ -90,6 +93,11 @@ class MainApp(MDApp):
                                             mm              VARCHAR(250),
                                             cal             VARCHAR(50))
                                         """)
+
+        c.execute("""CREATE TABLE if not exists dodatek_plytki(
+                                                    oznaczenie      VARCHAR(3),
+                                                    opis              VARCHAR(250))
+                                                """)
 
         # Check to see if table created
         c.execute("SELECT * from kształt_plytki")
@@ -270,6 +278,39 @@ class MainApp(MDApp):
 
         # Close connection
         mydb.close()
+
+    def submit_dodatek(self):
+        mydb = mysql.connector.connect(
+            host = "localhost",
+            user = "root",
+            password = "password123",
+            database = "second_db",
+            )
+
+        # Create A Cursor
+        c = mydb.cursor()
+
+        # Add A Record
+        sql_command = "INSERT INTO dodatek_plytki (oznaczenie, opis) VALUES (%s, %s)"
+        value = (self.root.ids.dodatek.ids.word_input.text,self.root.ids.dodatek.ids.word_input2.text,)
+
+        # Exceute SQL Command
+        c.execute(sql_command, value)
+
+
+        # Add a message
+        self.root.ids.dodatek.ids.word_label_dodaj_dodatek.text = f'{self.root.ids.dodatek.ids.word_input.text} Added'
+
+        # Clear the input box
+        self.root.ids.dodatek.ids.word_input.text = ''
+        self.root.ids.dodatek.ids.word_input2.text = ''
+
+
+        # Commit changes
+        mydb.commit()
+
+        # Close connection
+        mydb.close()
     def show_records(self):
         mydb = mysql.connector.connect(
             host="localhost",
@@ -405,6 +446,33 @@ class MainApp(MDApp):
         # Close connection
         mydb.close()
 
+    def show_records_dodatek(self):
+        mydb = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="password123",
+            database="second_db",
+        )
+
+        # Create A Cursor
+        c = mydb.cursor()
+
+        # Grab records from database
+        c.execute("SELECT * FROM dodatek_plytki")
+        records = c.fetchall()
+
+        word = ''
+        # Loop for records
+        for record in records:
+            word = f'{word}\n{record}'
+            self.root.ids.dodatek.ids.word_label_dodaj_dodatek.text = f'{word}'
+
+        # Commit changes
+        mydb.commit()
+
+        # Close connection
+        mydb.close()
+
     def check(self):
         mydb = mysql.connector.connect(
             host="localhost",
@@ -424,6 +492,7 @@ class MainApp(MDApp):
         sql_query3 = """SELECT ic, grubosc FROM tolerancja_plytki WHERE oznaczenie = %s"""
         sql_query4 = """SELECT opis FROM rodzaj_plytki WHERE oznaczenie = %s"""
         sql_query5 = """SELECT mm, cal FROM grubosc_plytki WHERE oznaczenie = %s"""
+        sql_query6 = """SELECT opis FROM dodatek_plytki WHERE oznaczenie = %s"""
         try:
             c.execute(sql_query, (value[0],))
             record = c.fetchone()
@@ -435,17 +504,28 @@ class MainApp(MDApp):
             record4 = c.fetchone()
             c.execute(sql_query5, (value[7:9],))
             record5 = c.fetchall()
-            # nie chcąc otrzymać w odpowiedzi ('cos') tylko cos to trzeba dać indeks [0]
-            self.root.ids.second_check.ids.word_label.text = f'Jest to {record[0]} o kącie natarcia równym {record2[0]} \n' \
-                                                             f'Jej tolerancja okregu wpisanego wynosi {record3[0][0]}, a rolerancja grubości {record3[0][1]} ' \
-                                                             f'\n Rodzajem płytki jest {record4[0]}. \n' \
-                                                             f'Długość krawiędzi tnącej jest równa {value[5:7]} mm, a grubość płytki wynosi {record5[0][0]} mm.'
+            try:
+                c.execute(sql_query6, (value[12:14],))
+                record6 = c.fetchone()
+                self.root.ids.second_check.ids.word_label.text = f'Jest to {record[0]} o kącie natarcia równym {record2[0]} \n' \
+                                                                f'Jej tolerancja okregu wpisanego wynosi {record3[0][0]}, a rolerancja grubości {record3[0][1]} ' \
+                                                                f'\n Rodzajem płytki jest {record4[0]}. \n' \
+                                                                f'Długość krawiędzi tnącej jest równa {value[5:7]} mm, a grubość płytki wynosi {record5[0][0]} mm.' \
+                                                                f'\n Promień kąta naroża wynosi {value[9:10]}.{value[10:11]} mm. ' \
+                                                                f'\n Z dodatkowych informacji jest to {record6[0]} '
+            except:
+                self.root.ids.second_check.ids.word_label.text = f'Jest to {record[0]} o kącie natarcia równym {record2[0]} \n' \
+                                                                 f'Jej tolerancja okregu wpisanego wynosi {record3[0][0]}, a rolerancja grubości {record3[0][1]} ' \
+                                                                 f'\n Rodzajem płytki jest {record4[0]}. \n' \
+                                                                 f'Długość krawiędzi tnącej jest równa {value[5:7]} mm, a grubość płytki wynosi {record5[0][0]} mm.' \
+                                                                 f'\n Promień kąta naroża wynosi {value[9:10]}.{value[10:11]} mm. '
+
         except TypeError:
             self.root.ids.second_check.ids.word_label.text = f'Nie znaleziono podanego kodu płytki w bazie danych, sprawdź poprawność ' \
                                             f'wpisanych danych i spróbuj jeszcze raz'
         except IndexError:
             self.root.ids.second_check.ids.word_label.text = f'Sprawdź czy podany przez ciebie kod jest poprawny oraz czy format jest poprawny. ' \
-                                            f'\n Format powinien być XXXX XXXXXX'
+                                            f'\n Format powinien być XXXX XXXXXX-XX'
 
         # Commit changes
         mydb.commit()
