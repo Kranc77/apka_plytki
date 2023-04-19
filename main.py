@@ -45,16 +45,16 @@ class MainApp(MDApp):
 
         # Define DB Stuff
         mydb = mysql.connector.connect(
-            host = "localhost",
-            user = "root",
-            password = "password123",
-            database = "second_db",
+            host = "bos9wbel1mguyy5bb8gi-mysql.services.clever-cloud.com",
+            user = "umyjx6icxhrubs6y",
+            password = "5WpHDK4r1arfPIVuAuPK",
+            database = "bos9wbel1mguyy5bb8gi",
             )
 
 
         # Create A Cursor
         c = mydb.cursor()
-
+        '''
         # Create an actual database
         c.execute("CREATE DATABASE IF NOT EXISTS second_db")
 
@@ -62,10 +62,11 @@ class MainApp(MDApp):
         c.execute("SHOW DATABASES")
         for db in c:
             print(db)
-
+        '''
         # Drop table
         #c.execute("DROP TABLE plytki")
-
+        '''
+        '''
         # Create A Table
         c.execute("""CREATE TABLE if not exists kształt_plytki(
             oznaczenie      VARCHAR(2),
@@ -114,11 +115,11 @@ class MainApp(MDApp):
 
     def submit(self):
         mydb = mysql.connector.connect(
-            host = "localhost",
-            user = "root",
-            password = "password123",
-            database = "second_db",
-            )
+            host="bos9wbel1mguyy5bb8gi-mysql.services.clever-cloud.com",
+            user="umyjx6icxhrubs6y",
+            password="5WpHDK4r1arfPIVuAuPK",
+            database="bos9wbel1mguyy5bb8gi",
+        )
 
         # Create A Cursor
         c = mydb.cursor()
@@ -147,11 +148,11 @@ class MainApp(MDApp):
 
     def submit_kat_natarcia(self):
         mydb = mysql.connector.connect(
-            host = "localhost",
-            user = "root",
-            password = "password123",
-            database = "second_db",
-            )
+            host="bos9wbel1mguyy5bb8gi-mysql.services.clever-cloud.com",
+            user="umyjx6icxhrubs6y",
+            password="5WpHDK4r1arfPIVuAuPK",
+            database="bos9wbel1mguyy5bb8gi",
+        )
 
         # Create A Cursor
         c = mydb.cursor()
@@ -180,11 +181,11 @@ class MainApp(MDApp):
 
     def submit_rodzaj(self):
         mydb = mysql.connector.connect(
-            host = "localhost",
-            user = "root",
-            password = "password123",
-            database = "second_db",
-            )
+            host="bos9wbel1mguyy5bb8gi-mysql.services.clever-cloud.com",
+            user="umyjx6icxhrubs6y",
+            password="5WpHDK4r1arfPIVuAuPK",
+            database="bos9wbel1mguyy5bb8gi",
+        )
 
         # Create A Cursor
         c = mydb.cursor()
@@ -213,11 +214,11 @@ class MainApp(MDApp):
 
     def submit_tolerancja(self):
         mydb = mysql.connector.connect(
-            host = "localhost",
-            user = "root",
-            password = "password123",
-            database = "second_db",
-            )
+            host="bos9wbel1mguyy5bb8gi-mysql.services.clever-cloud.com",
+            user="umyjx6icxhrubs6y",
+            password="5WpHDK4r1arfPIVuAuPK",
+            database="bos9wbel1mguyy5bb8gi",
+        )
 
         # Create A Cursor
         c = mydb.cursor()
@@ -247,11 +248,11 @@ class MainApp(MDApp):
 
     def submit_grubosc(self):
         mydb = mysql.connector.connect(
-            host = "localhost",
-            user = "root",
-            password = "password123",
-            database = "second_db",
-            )
+            host="bos9wbel1mguyy5bb8gi-mysql.services.clever-cloud.com",
+            user="umyjx6icxhrubs6y",
+            password="5WpHDK4r1arfPIVuAuPK",
+            database="bos9wbel1mguyy5bb8gi",
+        )
 
         # Create A Cursor
         c = mydb.cursor()
@@ -281,11 +282,11 @@ class MainApp(MDApp):
 
     def submit_dodatek(self):
         mydb = mysql.connector.connect(
-            host = "localhost",
-            user = "root",
-            password = "password123",
-            database = "second_db",
-            )
+            host="bos9wbel1mguyy5bb8gi-mysql.services.clever-cloud.com",
+            user="umyjx6icxhrubs6y",
+            password="5WpHDK4r1arfPIVuAuPK",
+            database="bos9wbel1mguyy5bb8gi",
+        )
 
         # Create A Cursor
         c = mydb.cursor()
@@ -313,10 +314,10 @@ class MainApp(MDApp):
         mydb.close()
     def show_records(self):
         mydb = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="password123",
-            database="second_db",
+            host="bos9wbel1mguyy5bb8gi-mysql.services.clever-cloud.com",
+            user="umyjx6icxhrubs6y",
+            password="5WpHDK4r1arfPIVuAuPK",
+            database="bos9wbel1mguyy5bb8gi",
         )
 
         # Create A Cursor
@@ -340,10 +341,10 @@ class MainApp(MDApp):
 
     def show_records_natarcia(self):
         mydb = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="password123",
-            database="second_db",
+            host="bos9wbel1mguyy5bb8gi-mysql.services.clever-cloud.com",
+            user="umyjx6icxhrubs6y",
+            password="5WpHDK4r1arfPIVuAuPK",
+            database="bos9wbel1mguyy5bb8gi",
         )
 
         # Create A Cursor
@@ -367,10 +368,10 @@ class MainApp(MDApp):
 
     def show_records_rodzaj(self):
         mydb = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="password123",
-            database="second_db",
+            host="bos9wbel1mguyy5bb8gi-mysql.services.clever-cloud.com",
+            user="umyjx6icxhrubs6y",
+            password="5WpHDK4r1arfPIVuAuPK",
+            database="bos9wbel1mguyy5bb8gi",
         )
 
         # Create A Cursor
@@ -394,10 +395,10 @@ class MainApp(MDApp):
 
     def show_records_tolerancja(self):
         mydb = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="password123",
-            database="second_db",
+            host="bos9wbel1mguyy5bb8gi-mysql.services.clever-cloud.com",
+            user="umyjx6icxhrubs6y",
+            password="5WpHDK4r1arfPIVuAuPK",
+            database="bos9wbel1mguyy5bb8gi",
         )
 
         # Create A Cursor
@@ -421,10 +422,10 @@ class MainApp(MDApp):
 
     def show_records_grubosc(self):
         mydb = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="password123",
-            database="second_db",
+            host="bos9wbel1mguyy5bb8gi-mysql.services.clever-cloud.com",
+            user="umyjx6icxhrubs6y",
+            password="5WpHDK4r1arfPIVuAuPK",
+            database="bos9wbel1mguyy5bb8gi",
         )
 
         # Create A Cursor
@@ -448,10 +449,10 @@ class MainApp(MDApp):
 
     def show_records_dodatek(self):
         mydb = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="password123",
-            database="second_db",
+            host="bos9wbel1mguyy5bb8gi-mysql.services.clever-cloud.com",
+            user="umyjx6icxhrubs6y",
+            password="5WpHDK4r1arfPIVuAuPK",
+            database="bos9wbel1mguyy5bb8gi",
         )
 
         # Create A Cursor
@@ -475,10 +476,10 @@ class MainApp(MDApp):
 
     def check(self):
         mydb = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="password123",
-            database="second_db",
+            host="bos9wbel1mguyy5bb8gi-mysql.services.clever-cloud.com",
+            user="umyjx6icxhrubs6y",
+            password="5WpHDK4r1arfPIVuAuPK",
+            database="bos9wbel1mguyy5bb8gi",
         )
 
         # Create A Cursor
